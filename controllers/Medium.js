@@ -185,6 +185,36 @@ exports.remove = function (req, res) {
 
 };
 
+
+var streamURL = function (req, res) {
+  Medium.findById(req.params.id_medium, function (error, medium) {
+
+    if (error) {
+      _.response.sendError(res, 'Failed stream.', 500);
+      return;
+    }
+
+    if (medium.url === undefined) {
+      _.response.sendError(res, 'Failed stream.', 404);
+      return;
+    }
+
+    var absolutePathToFile = medium.url;
+    absolutePathToFile = path.join(req.app.get('media'), absolutePathToFile);
+    res.status(200).sendFile(
+      absolutePathToFile,
+      function (error) {
+        if (error) {
+          statusCode = error.status;
+          if (statusCode === undefined) {
+            statusCode = 500;
+          }
+          res.status(statusCode).end();
+        }
+      });
+  });
+};
+
 var streamFormat = function (req, res, extension) {
   Medium.findById(req.params.id_medium, function (error, medium) {
 

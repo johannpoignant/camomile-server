@@ -280,6 +280,12 @@ exports.initialize = function (app) {
     Medium.remove);
 
   // stream one medium in default format
+  app.get('/medium/:id_medium/streamURL',
+    Authentication.middleware.isLoggedIn,
+    _.middleware.fExistsWithRights(mMedium, _.READ),
+    Medium.streamURL);
+
+  // stream one medium in default format
   app.get('/medium/:id_medium/video',
     Authentication.middleware.isLoggedIn,
     _.middleware.fExistsWithRights(mMedium, _.READ),
