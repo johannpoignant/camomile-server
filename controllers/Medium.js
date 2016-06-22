@@ -185,8 +185,7 @@ exports.remove = function (req, res) {
 
 };
 
-
-var streamURL = function (req, res) {
+exports.streamURL = function (req, res) {
   Medium.findById(req.params.id_medium, function (error, medium) {
 
     if (error) {
